@@ -1,9 +1,14 @@
 from django.shortcuts import render
-from django.core.mail import EmailMessage,BadHeaderError
+from django.core.mail import EmailMessage, BadHeaderError
+from django.core.cache import cache
+import requests
+from django.views.decorators.cache import cache_page
 
-from .tasks import notify_customers
 
-
+@cache_page(5*60)
 def say_hello(request):
-    notify_customers.delay('Hello')
-    return render(request, 'hello.html', {'name': 'Mosh'})
+
+    response = requests.get('https://httpbin.org/delay/2')
+    data = response.json()
+
+    return render(request, 'hello.html', {'name': data})

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.conf import settings
-from django.core.validators import MinValueValidator,FileExtensionValidator
+from django.core.validators import MinValueValidator, FileExtensionValidator
 from django.db import models
 from uuid import uuid4
 
@@ -10,7 +10,6 @@ from store.validators import validate_file_size
 class Promotion(models.Model):
     description = models.CharField(max_length=255)
     discount = models.FloatField()
-    
 
 
 class Collection(models.Model):
@@ -103,7 +102,8 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.PROTECT, related_name='items')
+    order = models.ForeignKey(
+        Order, on_delete=models.PROTECT, related_name='items')
     product = models.ForeignKey(
         Product, on_delete=models.PROTECT, related_name='orderitems')
     quantity = models.PositiveSmallIntegerField()
@@ -140,8 +140,10 @@ class Review(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
     date = models.DateField(auto_now_add=True)
-    
-    
+
+
 class ProductImage(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField(upload_to='store/images',validators=[validate_file_size])
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to='store/images',
+                              validators=[validate_file_size])
